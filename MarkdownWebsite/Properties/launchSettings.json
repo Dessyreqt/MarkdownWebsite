@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MarkdownWebsite": {
+      "commandName": "Project",
+      "commandLineArgs": "markdown -i \"D:\\web_test\\src\\test.md\" -o \"D:\\web_test\\md_out\\test.html\""
+    }
+  }
+}
