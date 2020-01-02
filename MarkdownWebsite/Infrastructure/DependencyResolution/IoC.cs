@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Reflection;
     using CommandProcessing;
     using LightInject;
     using MediatR;
@@ -29,7 +30,7 @@
 
             container.Register<ServiceFactory>(ctx => ctx.GetInstance);
 
-            var configBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            var configBuilder = new ConfigurationBuilder().SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             var configuration = configBuilder.Build();
             container.RegisterInstance<IConfiguration>(configuration);
 

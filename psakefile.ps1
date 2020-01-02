@@ -32,5 +32,5 @@ task BuildExampleWebsite {
 
 task Publish {
 	exec { & dotnet clean -c Release $project_dir }
-	exec { & dotnet publish -c Release -r $runtime_id $project_dir /p:PublishSingleFile=true /p:SelfContained=false }
+	exec { & dotnet publish -c Release -r $runtime_id $project_dir /p:SelfContained=false }
 }
