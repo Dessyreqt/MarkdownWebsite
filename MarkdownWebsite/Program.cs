@@ -5,23 +5,26 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
-    using MarkdownWebsite.Infrastructure;
-    using MarkdownWebsite.Infrastructure.DependencyResolution;
-    using MarkdownWebsite.Infrastructure.Logging;
     using CommandLine;
     using CommandLine.Text;
     using LightInject;
+    using MarkdownWebsite.Infrastructure;
+    using MarkdownWebsite.Infrastructure.DependencyResolution;
     using MediatR;
+    using Microsoft.Extensions.Configuration;
+    using Serilog;
 
     class Program
     {
         static void Main(string[] args)
         {
-            Logger.Initialize(new LoggerSettings());
+            var configuration = IoC.Container.GetInstance<IConfiguration>();
+
+            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).CreateLogger();
 
             var watch = new Stopwatch();
             watch.Start();
-            Logger.Instance.Information("Initializing...");
+            Log.Debug("Initializing...");
 
             var appState = InitializeState();
             var mediator = BuildMediator();
@@ -34,7 +37,7 @@
                 });
 
             watch.Stop();
-            Logger.Instance.Information("Initialization Complete in {Elapsed:000}ms", watch.ElapsedMilliseconds);
+            Log.Debug("Initialization Complete in {Elapsed:000}ms", watch.ElapsedMilliseconds);
 
             var types = appState.AvailableVerbs.ToArray();
             var parserResult = parser.ParseArguments(args, types);
@@ -63,7 +66,7 @@
                     return HelpText.DefaultParsingErrorsHandler(result, h);
                 },
                 e => e);
-            Console.WriteLine(helpText);
+            Log.Information(helpText);
         }
 
         private static IMediator BuildMediator()

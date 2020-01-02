@@ -3,14 +3,14 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Logging;
     using MediatR;
+    using Serilog;
 
     public class ExceptionLoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            TResponse response = default(TResponse);
+            TResponse response = default;
 
             try
             {
@@ -18,8 +18,7 @@
             }
             catch (Exception ex)
             {
-                Logger.Instance.Error("Exception caught: {Exception}", ex);
-                Console.WriteLine($"Error: {ex.Message}");
+                Log.Error(ex, "Unhandled exception handling {RequestName} when called with request {@Request}", typeof(TRequest).FullName, request);
             }
 
             return response;

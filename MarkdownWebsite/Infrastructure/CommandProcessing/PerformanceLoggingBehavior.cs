@@ -3,16 +3,15 @@
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
-    using Logging;
     using MediatR;
+    using Serilog;
 
     public class PerformanceLoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            var watch = new Stopwatch();
-            watch.Start();
-            Logger.Instance.Debug("Handling {RequestName}", typeof(TRequest).Name);
+            var watch = Stopwatch.StartNew();
+            Log.Debug("Handling {RequestName} with reqest {@Request}", typeof(TRequest).FullName, request);
 
             TResponse response;
 
@@ -23,7 +22,7 @@
             finally
             {
                 watch.Stop();
-                Logger.Instance.Debug("Handled {RequestName} in {Elapsed:000}ms", typeof(TRequest).Name, watch.ElapsedMilliseconds);
+                Log.Debug("Handled {RequestName} in {Elapsed:000}ms", typeof(TRequest).FullName, watch.ElapsedMilliseconds);
             }
 
             return response;
