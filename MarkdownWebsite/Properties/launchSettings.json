@@ -2,7 +2,7 @@
   "profiles": {
     "MarkdownWebsite": {
       "commandName": "Project",
-      "commandLineArgs": "markdown -i \"D:\\web_test\\hbs_out\\test.md\" -o \"D:\\web_test\\md_out\\test.html\""
+      "commandLineArgs": "website -i \"D:\\web_test\\src\" -o \"D:\\web_test\\static\" -l \"D:\\web_test\\layout\""
     }
   }
 }
