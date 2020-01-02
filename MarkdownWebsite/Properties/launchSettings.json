@@ -2,7 +2,7 @@
   "profiles": {
     "MarkdownWebsite": {
       "commandName": "Project",
-      "commandLineArgs": "website -i \"D:\\web_test\\src\" -o \"D:\\web_test\\static\" -l \"D:\\web_test\\layout\""
+      "commandLineArgs": "website -i D:\\github\\dessyreqt\\MarkdownWebsite\\example\\src -o D:\\github\\dessyreqt\\MarkdownWebsite\\example\\static -l D:\\github\\dessyreqt\\MarkdownWebsite\\example\\layout"
     }
   }
 }

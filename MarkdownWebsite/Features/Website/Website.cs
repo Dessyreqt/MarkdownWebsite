@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Text.RegularExpressions;
     using CommandLine;
     using HandlebarsDotNet;
     using Markdig;
@@ -114,14 +115,15 @@
                     RegisterAssetsHelper(outputDirectory, Path.Combine(request.Output, "assets"));
 
                     var template = Handlebars.Compile(inputText);
-                    var handlebarsMd = template(inputText);
+                    var handlebarsMd = FixMarkdownLinks(template(inputText));
                     var html = Markdown.ToHtml(handlebarsMd);
-
                     var filename = Path.GetFileNameWithoutExtension(inputFile);
                     var outputFile = Path.Combine(outputDirectory, $"{filename}.html");
 
-                    using var writer = new StreamWriter(outputFile, false);
-                    writer.Write(html);
+                    using (var writer = new StreamWriter(outputFile, false))
+                    {
+                        writer.Write(html);
+                    }
 
                     Log.Information("{Input} -> {Output}", inputFile, outputFile);
                 }
@@ -134,6 +136,11 @@
                     Log.Information("{Input} -> {Output}", inputFile, outputFile);
                 }
             }
+        }
+
+        private string FixMarkdownLinks(string handlebarsMd)
+        {
+            return Regex.Replace(handlebarsMd, @"\[(.*?)\]\((.*?)\.md\)", "[$1]($2.html)");
         }
 
         private void RegisterAssetsHelper(string outputDirectory, string assetsDirectory)
