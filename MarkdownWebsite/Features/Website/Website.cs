@@ -30,6 +30,7 @@
             {
                 Log.Information("Deleting {OutputFolder}...", request.Output);
                 Directory.Delete(request.Output, true);
+                WaitForDeletion(request.Output);
             }
 
             if (!string.IsNullOrWhiteSpace(request.Layout))
@@ -138,18 +139,29 @@
             }
         }
 
-        private string FixMarkdownLinks(string handlebarsMd)
+        private static string FixMarkdownLinks(string handlebarsMd)
         {
             return Regex.Replace(handlebarsMd, @"\[(.*?)\]\((.*?)\.md\)", "[$1]($2.html)");
         }
 
-        private void RegisterAssetsHelper(string outputDirectory, string assetsDirectory)
+        private static void RegisterAssetsHelper(string outputDirectory, string assetsDirectory)
         {
             var relativePathToAssets = Path.GetRelativePath(outputDirectory, assetsDirectory).Replace('\\', '/');
 
             Handlebars.RegisterHelper("asset", (writer, context, parameters) => {
                 writer.WriteSafeString($"{relativePathToAssets}/{parameters[0]}");
             });
+        }
+        private static void WaitForDeletion(string directoryName)
+        {
+            bool deleted;
+
+            do
+            {
+                deleted = !Directory.Exists(directoryName);
+
+                System.Threading.Thread.Sleep(100);
+            } while (!deleted);
         }
     }
 }
