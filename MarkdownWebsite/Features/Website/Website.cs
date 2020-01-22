@@ -70,7 +70,7 @@
                 if (Directory.Exists(partialsDirectory))
                 {
                     Log.Information("Registering Partials...");
-                    var partials = Directory.GetFiles(partialsDirectory, "*.hbs");
+                    var partials = Directory.GetFiles(partialsDirectory, "*.hbs", SearchOption.AllDirectories);
 
                     foreach (var partial in partials)
                     {
@@ -159,7 +159,6 @@
             do
             {
                 deleted = !Directory.Exists(directoryName);
-
                 System.Threading.Thread.Sleep(100);
             } while (!deleted);
         }
