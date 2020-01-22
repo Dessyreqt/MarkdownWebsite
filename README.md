@@ -56,6 +56,7 @@ Please refer to the example for sample input and output.
 There are some quirks that you'll have to keep in mind when composing your website in markdown:
 - Try to keep handlebars statements to not use spaces. Due to the way HandlebarsDotNet works `{{#>page}}` works but `{{#> page }}` does not.
 - If the first line after the `@partial-block` in one of your templates is indented four spaces, it can get interpretted by the markdown compiler as preformatted code and thus mangled. Try not to do that.
+- Partials can be nested in folders, but no two partials can share the same name.
 
 ## To be added
 - Support for Handlebars helpers in files?
