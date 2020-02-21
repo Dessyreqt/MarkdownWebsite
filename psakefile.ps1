@@ -7,7 +7,7 @@ properties {
 	$runtime_id = "win-x64"
     $project_dir = "$solution_dir\$solution_name"
     
-    $output_dir = "$project_dir\bin\Debug\netcoreapp3.1\win-x64\publish"
+    $output_dir = "$project_dir\bin\Debug\netcoreapp3.1\win-x64"
     $output_exe = "$output_dir\MarkdownWebsite.exe"
 
     $example_src = "$base_dir\example\src"
