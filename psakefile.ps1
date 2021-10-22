@@ -1,6 +1,5 @@
 properties {
     $base_dir = resolve-path .
-    $db_dir = "$base_dir\db"
     $solution_name = "MarkdownWebsite"
     $solution_dir = "$base_dir"
 	$solution_path = "$solution_dir\$solution_name.sln"
