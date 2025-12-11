@@ -30,7 +30,7 @@
 
             container.Register<ServiceFactory>(ctx => ctx.GetInstance);
 
-            var configBuilder = new ConfigurationBuilder().SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            var configBuilder = new ConfigurationBuilder().SetBasePath(Path.GetDirectoryName(AppContext.BaseDirectory)).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             var configuration = configBuilder.Build();
             container.RegisterInstance<IConfiguration>(configuration);
 
