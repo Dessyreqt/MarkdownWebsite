@@ -66,7 +66,7 @@
                 }
 
                 var partialsDirectory = $"{request.Layout}\\partials";
-              
+
                 if (Directory.Exists(partialsDirectory))
                 {
                     Log.Information("Registering Partials...");
@@ -115,9 +115,12 @@
                 {
                     RegisterAssetsHelper(outputDirectory, Path.Combine(request.Output, "assets"));
 
+                    var pipeline = new MarkdownPipelineBuilder();
+                    pipeline.UseGridTables();
+                    pipeline.UsePipeTables();
                     var template = Handlebars.Compile(inputText);
                     var handlebarsMd = FixMarkdownLinks(template(inputText));
-                    var html = Markdown.ToHtml(handlebarsMd);
+                    var html = Markdown.ToHtml(handlebarsMd, pipeline.Build());
                     var filename = Path.GetFileNameWithoutExtension(inputFile);
                     var outputFile = Path.Combine(outputDirectory, $"{filename}.html");
 
@@ -148,7 +151,8 @@
         {
             var relativePathToAssets = Path.GetRelativePath(outputDirectory, assetsDirectory).Replace('\\', '/');
 
-            Handlebars.RegisterHelper("asset", (writer, context, parameters) => {
+            Handlebars.RegisterHelper("asset", (writer, context, parameters) =>
+            {
                 writer.WriteSafeString($"{relativePathToAssets}/{parameters[0]}");
             });
         }
